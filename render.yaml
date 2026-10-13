@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: tikutils-web
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/status
