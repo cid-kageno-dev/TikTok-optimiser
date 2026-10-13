@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10"><title>TikUtils Web — Video Analyzer & Optimizer</title>
+<style>
+:root{color-scheme:dark;--bg:#090b10;--panel:#11151d;--line:#262d3a;--muted:#9aa6b8;--text:#f4f7fb;--accent:#b9f66a;--purple:#9c8cff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -15%,#233024 0,transparent 38%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}
+.wrap{width:min(1080px,calc(100% - 32px));margin:auto}.top{height:74px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{font-weight:800;font-size:20px;letter-spacing:-.7px;display:flex;gap:10px;align-items:center}.logo{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:var(--accent);color:#111;font-weight:900}
+.pill{font-size:12px;border:1px solid var(--line);border-radius:30px;padding:7px 11px;color:var(--muted)}.hero{padding:48px 0 28px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(34px,6vw,58px);letter-spacing:-2px;line-height:1.04;margin:12px 0 15px;max-width:760px}.hero p{color:var(--muted);max-width:650px;font-size:16px;margin:0}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin:18px 0 24px}.panel{background:linear-gradient(150deg,#151a24,#0f1219);border:1px solid var(--line);border-radius:18px;padding:22px;min-width:0}.panel h2{font-size:17px;margin:0 0 5px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+.drop{border:1px dashed #485365;border-radius:14px;padding:27px 16px;text-align:center;background:#0b0e14;cursor:pointer}.drop:hover{border-color:var(--accent)}.drop strong{display:block;margin:8px 0 3px}.drop small{color:var(--muted)}
+input[type=file]{display:none}.filelist{font-size:13px;color:var(--muted);margin-top:12px;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:750;cursor:pointer;font-size:13px}.primary{background:var(--accent);color:#12170d}.secondary{background:#242b38;color:var(--text);border:1px solid #343d4d}.btn:disabled{opacity:.45;cursor:not-allowed}
+select{background:#0b0e14;color:var(--text);border:1px solid var(--line);padding:10px;border-radius:9px;width:100%;margin-top:10px}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:10px}.feature{border:1px solid var(--line);border-radius:12px;padding:14px}.feature b{display:block;font-size:14px}.feature span{color:var(--muted);font-size:12px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:6px}
+.results{margin:18px 0 50px}.resulthead{display:flex;align-items:center;justify-content:space-between;gap:10px}.tablewrap{overflow:auto;margin-top:14px}table{width:100%;border-collapse:collapse;min-width:600px;font-size:13px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}td:first-child{overflow-wrap:anywhere;max-width:200px}.tag{border:1px solid #3d4a39;color:var(--accent);border-radius:7px;padding:3px 7px;font-size:11px;white-space:nowrap}.tag.no{border-color:#554343;color:#ffb3a8}
+.notice{background:#171a20;border:1px solid #343943;padding:13px;border-radius:11px;color:#c4cbd7;font-size:12px;margin-top:16px}.status{font-size:12px;color:var(--muted);margin-top:12px;min-height:18px}.error{color:#ffb3a8}.foot{border-top:1px solid var(--line);padding:20px 0 35px;color:var(--muted);font-size:12px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding-top:35px}.panel{padding:17px}.pill{display:none}.features{gap:8px}.feature{padding:11px}}
+</style></head>
+<body><div class="wrap">
+<header class="top"><div class="brand"><div class="logo">T</div>TikUtils <span style="color:var(--muted);font-weight:500">/ WEB</span></div><div class="pill">Free · FFmpeg powered · No paid API</div></header>
+<section class="hero"><div class="eyebrow">Video toolkit</div><h1>Know your video.<br><span style="color:var(--accent)">Optimize with intent.</span></h1><p>Inspect resolution, frame rate, codec and bitrate. Compress one video or a batch for a cleaner, upload-ready MP4 workflow.</p></section>
+<section class="grid">
+<div class="panel"><h2>Video workspace</h2><p class="sub">Select MP4, MOV, MKV, M4V or WebM files.</p>
+<label class="drop" for="videos"><span style="font-size:27px">↥</span><strong>Choose videos from your device</strong><small>Multiple files supported · Processing runs on the server</small></label><input id="videos" type="file" accept="video/mp4,video/quicktime,video/x-matroska,video/webm,.m4v" multiple>
+<div id="filelist" class="filelist">No files selected.</div>
+<div style="margin-top:17px;font-size:13px;font-weight:700">Compression profile</div>
+<select id="preset"><option value="high">High quality — CRF 18</option><option value="balanced" selected>Balanced — CRF 21</option><option value="small">Smaller file — CRF 24</option></select>
+<div class="actions"><button class="btn primary" id="analyze">Analyze videos</button><button class="btn secondary" id="optimize">Optimize & download</button></div><div id="status" class="status" role="status"></div>
+<div class="notice">Optimization re-encodes video to H.264 MP4 and audio to AAC. Re-encoding is not lossless; preview the result before posting. Files are processed temporarily and then removed.</div>
+</div>
+<div class="panel"><h2>What you can verify</h2><p class="sub">Measurements come from FFprobe, not estimates.</p><div class="features">
+<div class="feature"><b>▣ Resolution</b><span>Check 4K dimensions</span></div><div class="feature"><b>◷ Frame rate</b><span>Verify ~60 FPS source</span></div><div class="feature"><b>⌁ Bitrate</b><span>Source bitrate in Mbps</span></div><div class="feature"><b>⇩ Batch workflow</b><span>Analyze many files at once</span></div>
+</div><div class="notice"><span class="dot"></span><b>Server readiness:</b> <span id="serverStatus">checking FFmpeg…</span><br><br>For 4K/60 FPS, the report verifies the file's dimensions and reported average frame rate. It cannot guarantee the platform's playback resolution or frame rate after upload.</div></div>
+</section>
+<section class="panel results"><div class="resulthead"><div><h2>Analysis results</h2><p class="sub" style="margin:4px 0 0">Select Analyze videos to inspect your files.</p></div><span class="pill" id="count">0 files</span></div><div class="tablewrap"><table><thead><tr><th>File</th><th>Resolution</th><th>FPS</th><th>Bitrate</th><th>Size</th><th>4K / 60</th></tr></thead><tbody id="tbody"><tr><td colspan="6" style="color:var(--muted);text-align:center;padding:28px">Your results will appear here.</td></tr></tbody></table></div></section>
+<footer class="foot">TikUtils Web is an independent web adaptation. It does not guarantee that TikTok will skip server-side transcoding or preserve uploaded quality.</footer>
+</div>
+<script>
+const input=document.getElementById('videos'), list=document.getElementById('filelist'), statusEl=document.getElementById('status');
+const fmt=n=>n>=1024?(n/1024).toFixed(1)+' GB':n.toFixed(1)+' MB';
+input.addEventListener('change',()=>{const fs=[...input.files];list.textContent=fs.length?fs.map(f=>`${f.name} · ${fmt(f.size/1048576)}`).join('\\n'):'No files selected.';list.style.whiteSpace='pre-line';});
+async function postFiles(url, extra={}){const fs=[...input.files];if(!fs.length)throw Error('Choose at least one video first.');const fd=new FormData();fs.forEach(f=>fd.append('videos',f));Object.entries(extra).forEach(([k,v])=>fd.append(k,v));const r=await fetch(url,{method:'POST',body:fd});if(!r.ok){let d={};try{d=await r.json()}catch{}throw Error(d.error||'Request failed ('+r.status+')');}return r;}
+document.getElementById('analyze').onclick=async()=>{statusEl.className='status';statusEl.textContent='Analyzing video metadata…';document.getElementById('analyze').disabled=true;try{const r=await postFiles('/api/analyze');const d=await r.json();render(d.results||[]);if(d.errors?.length)statusEl.textContent=d.errors.map(x=>x.filename+': '+x.error).join(' · ');else statusEl.textContent=`Analysis complete: ${(d.results||[]).length} file(s).`;}catch(e){statusEl.className='status error';statusEl.textContent=e.message;}finally{document.getElementById('analyze').disabled=false;}};
+function render(rows){document.getElementById('count').textContent=rows.length+' file'+(rows.length===1?'':'s');const tb=document.getElementById('tbody');if(!rows.length){tb.innerHTML='<tr><td colspan="6">No analyzable videos.</td></tr>';return;}tb.innerHTML=rows.map(v=>`<tr><td>${esc(v.filename)}<br><small style="color:var(--muted)">${esc(v.video_codec)} · ${esc(v.audio_codec)}</small></td><td>${v.width} × ${v.height}</td><td>${v.fps_label}</td><td>${v.bitrate_mbps} Mbps</td><td>${v.size_mb} MB</td><td><span class="tag ${v.is_4k&&v.is_60fps?'':'no'}">${v.is_4k?'4K+':'Below 4K'} / ${v.is_60fps?'60 FPS+':'Below 60 FPS'}</span></td></tr>`).join('');}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+document.getElementById('optimize').onclick=async()=>{const b=document.getElementById('optimize');b.disabled=true;statusEl.className='status';statusEl.textContent='Encoding can take a while, especially for 4K video…';try{const r=await postFiles('/api/optimize',{preset:document.getElementById('preset').value});const blob=await r.blob();const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=r.headers.get('Content-Disposition')?.match(/filename="?([^";]+)"?/)?.[1]||'tikutils_optimized.mp4';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);statusEl.textContent='Optimization finished. Your download should begin shortly.';}catch(e){statusEl.className='status error';statusEl.textContent=e.message;}finally{b.disabled=false;}};
+fetch('/api/status').then(r=>r.json()).then(s=>{document.getElementById('serverStatus').textContent=s.ffmpeg&&s.ffprobe?'FFmpeg + FFprobe ready':'Missing server dependency';}).catch(()=>{document.getElementById('serverStatus').textContent='Could not check server';});
+</script></body></html>
